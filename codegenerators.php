@@ -16,7 +16,24 @@
 	 * Class that contains a $codeIndent member with the default value of the DEFAULT_INDENT contstant.
 	 */
 	class IndentedableCodeGenerator {
-		protected $codeIndent = DEFAULT_INDENT;		
+		/**Holds the code indent.*/
+		protected $codeIndent = "    ";
+
+		/**
+		 * Getter for the $codeIndent member.
+		 * @return The $codeIndent string.
+		 */
+		public function getCodeIndent(){
+			return $this->codeIndent;
+		}
+		
+		/**
+		 * Setter for the $codeIndent member.
+		 * @param unknown $value  The value that the $codeIndent will be set to.
+		 */
+		public function setCodeIndent($value) {
+			$this->codeIndent;
+		}
 	}
 	
 	/**
@@ -44,19 +61,19 @@
 	
 			if (count($comments) > 1) {
 	
-				$this->code .= DEFAULT_INDENT."\n";
-				$this->code .= DEFAULT_INDENT."/*\n";
+				$this->code .= $this->codeIndent."\n";
+				$this->code .= $this->codeIndent."/*\n";
 	
 				foreach ($comments as $line) {
-					$this->code .= DEFAULT_INDENT.$line."\n";
+					$this->code .= $this->codeIndent.$line."\n";
 				}
 	
-				$this->code .= DEFAULT_INDENT."*/\n";
-				$this->code .= DEFAULT_INDENT."\n";
+				$this->code .= $this->codeIndent."*/\n";
+				$this->code .= $this->codeIndent."\n";
 			} else {
-				$this->code .= DEFAULT_INDENT."\n";
-				$this->code .= DEFAULT_INDENT."//".$comment."\n";
-				$this->code .= DEFAULT_INDENT."\n";
+				$this->code .= $this->codeIndent."\n";
+				$this->code .= $this->codeIndent."//".$comment."\n";
+				$this->code .= $this->codeIndent."\n";
 			}
 		}
 		
@@ -67,22 +84,28 @@
 		 * entry will be appended with \n as the terminator for each line.  If the parmeter does
 		 * not contain the \n character a single line javadoc entry will be appended. 
 		 */
-		protected function addJavadoc($entry, $indent="    ") {
+		protected function addJavadoc($entry, $indent=NIL) {
+			if ($indent == NIL) {
+				$theIndent = $this->codeIndent;
+			} else {
+				$theIndent = $indent;
+			}
+			
 			if (!$this->javadoc) return;
 	
 			$lines = explode("\n", $entry);
 	
 			if (count($lines) > 1) {
-				$this->code .= $indent."\n";
-				$this->code .= $indent."/**\n";
+				$this->code .= $theIndent."\n";
+				$this->code .= $theIndent."/**\n";
 	
 				foreach ($lines as $line) {
-					$this->code .= $indent."* ".$line."\n";
+					$this->code .= $theIndent."* ".$line."\n";
 				}
 	
-				$this->code .= $indent."*/\n";
+				$this->code .= $theIndent."*/\n";
 			} else {
-				$this->code .= $indent."/** ".$entry." */\n";
+				$this->code .= $theIndent."/** ".$entry." */\n";
 			}
 		}
 	}

@@ -25,7 +25,8 @@
     $object->setPassword($password);
     $object->setTableName($tableName);
     $object->addOption("javadoc", $javadoc);
-     
+    $object->addOption("indent", "    ");
+         
     echo '<textarea cols="80"" rows="70">'.$object->getCode().'</textarea>';
 ?>
  

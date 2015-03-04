@@ -22,14 +22,17 @@ class PHPCodeGenerator extends StandardCommentsCodeGenerator implements IDBTable
 	 */
 	public function generateCode($info) {
 		$this->javadoc = ($info->options["javadoc"] == "yes");
-
+		
+		
 		if (array_key_exists ("indent", $info->options)) {
 			$this->codeIndent = $info->options["indent"];
 		} else {
-			$this->codeIndent = DEFAULT_INDENT;	
-		}
+			$this->codeIndent = DEFAULT_INDENT;
+		}		
+		
 		
 		// header.
+		
 		$this->code .= "<?php \n";
 			
 		$jd = "PHP Class for ".$info->databaseType." table ".$info->tableName."\nDatabase - ".$info->databaseName."\nServer Name - ".$info->serverName;
@@ -40,36 +43,39 @@ class PHPCodeGenerator extends StandardCommentsCodeGenerator implements IDBTable
 		foreach ($info->fieldData as $fld) {
 			$jd = "Member for DB field ".$fld->memberName." ".$info->type." Type: ".$fld->databaseDataType.".";
 			$this->addJavadoc($jd);
-			$this->code .= DEFAULT_INDENT."private $".strtolower($fld->memberName.";\n");
+			$this->code .= $this->codeIndent."private $".strtolower($fld->memberName.";\n");
 			if($this->javadoc) {
 				$this->code.="\n";
 			}
 		}
-		$this->code .= "    \n";
+		$this->code .= "\n";
 
 		// getters.
+		
 		$this->addComment("Getters.");
 
 		foreach ($info->fieldData as $fld) {
 			$jd = "Getter for the \$".strtolower($fld->memberName)." member.\n@return Returns the value of the \$".strtolower($fld->memberName)." member";
 			$this->addJavadoc("Getter for the \$".strtolower($fld->memberName)." member.\n@return Returns the value of the \$".strtolower($fld->memberName)." member.");
 
-			$this->code .= DEFAULT_INDENT."function get".ucfirst(strtolower($fld->memberName)."() {\n".DEFAULT_INDENT.DEFAULT_INDENT."return \$this->".strtolower($fld->memberName).";\n".DEFAULT_INDENT."}\n\n");
+			$this->code .= $this->codeIndent."function get".ucfirst(strtolower($fld->memberName)."() {\n".$this->codeIndent.$this->codeIndent."return \$this->".strtolower($fld->memberName).";\n".$this->codeIndent."}\n\n");
 		}
 
-		$this->code .= "    \n";
+		$this->code .= "\n";
 
 		//setters.
+		
 		$this->addComment("Setters.");
 
 		foreach ($info->fieldData as $fld) {
 			$jd = "Setter for the \$".strtolower($fld->memberName)." member.\n@param \$value The value that the \$".strtolower($fld->memberName)." member will be set  to.";
 			$this->addJavadoc($jd);
 
-			$this->code .= DEFAULT_INDENT."function set".ucfirst(strtolower($fld->memberName)."(\$value) {\n".DEFAULT_INDENT.DEFAULT_INDENT."\$this->".strtolower($fld->memberName)." = \$value;\n".DEFAULT_INDENT."}\n\n");
+			$this->code .= $this->codeIndent."function set".ucfirst(strtolower($fld->memberName)."(\$value) {\n".$this->codeIndent.$this->codeIndent."\$this->".strtolower($fld->memberName)." = \$value;\n".$this->codeIndent."}\n\n");
 		}
 
 		// footer.
+		
 		$this->code .="}\n";
 		$this->code .= "?>";
 		return $this->code;
