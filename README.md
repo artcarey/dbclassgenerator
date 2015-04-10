@@ -29,6 +29,6 @@ To add support for a different language.
 2) Implement the generateCode function. 
 3) Add a language constant for the language you wish to support.
 4) Modify generatorfactory.php so that it returns the object created in step 1
-5) Follow the instructions under Usage: User the language constant created in step 3
+5) Follow the instructions under Usage: Use the language constant created in step 3
 
 See definitions.php, generatorfactory.php, codegenerators.php, phpcodegenerator.php, main.php
